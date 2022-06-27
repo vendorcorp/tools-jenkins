@@ -171,7 +171,7 @@ resource "helm_release" "jenkins" {
   name       = "jenkins"
   repository = "https://charts.jenkins.io"
   chart      = "jenkins"
-  version    = "3.11.8"
+  version    = "4.1.11"
   namespace  = var.target_namespace
 
   # See https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/VALUES_SUMMARY.md
