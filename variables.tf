@@ -22,19 +22,3 @@ variable "environment" {
   type        = string
   default     = "production"
 }
-
-variable "target_namespace" {
-  description = "Namespace to create and deploy Nexus Repository Manager into."
-  type        = string
-  default     = "tools-jenkins"
-}
-
-variable "nxrm_instance_purpose" {
-  description = "Purpose of this NXRM installation - i.e. Vendor Corp, or other."
-  type        = string
-  default     = "vendorcorp"
-  validation {
-    condition     = contains(["se", "vendorcorp"], var.nxrm_instance_purpose)
-    error_message = "Valid values for var: nxrm_instance_purpose are (se, vendorcorp)."
-  }
-}
