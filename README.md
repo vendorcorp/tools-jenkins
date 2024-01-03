@@ -1,8 +1,7 @@
 # TOOLS: Jenkins
 
-This repository contains Terraform to build and manage our Jenkins installation.
+This repository contains Terraform to deploy a number of Jenkins Installation using the [Jenkins Operator](https://jenkinsci.github.io/kubernetes-operator).
 
-Inspired by [Jeknins on Kubernetes Guide](https://www.jenkins.io/doc/book/installing/kubernetes/).
 
 ## READ THIS FIRST
 
