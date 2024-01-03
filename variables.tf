@@ -12,7 +12,7 @@ variable "default_resource_tags" {
     purpose : "vendorcorp"
     owner : "phorton@sonatype.com"
     sonatype-group : "se"
-    vendorcorp-purpose : "tools"
+    vendorcorp-purpose : "iday"
   }
 }
 
@@ -23,18 +23,9 @@ variable "environment" {
   default     = "production"
 }
 
-variable "target_namespace" {
-  description = "Namespace to create and deploy Nexus Repository Manager into."
+# Jenkins Operator Chart Version
+variable "jeknins_operator_version" {
+  description = "Version of the Jenkins Operator to deploy"
   type        = string
-  default     = "tools-jenkins"
-}
-
-variable "nxrm_instance_purpose" {
-  description = "Purpose of this NXRM installation - i.e. Vendor Corp, or other."
-  type        = string
-  default     = "vendorcorp"
-  validation {
-    condition     = contains(["se", "vendorcorp"], var.nxrm_instance_purpose)
-    error_message = "Valid values for var: nxrm_instance_purpose are (se, vendorcorp)."
-  }
+  default     = "v0.8.0"
 }
