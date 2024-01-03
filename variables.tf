@@ -12,7 +12,7 @@ variable "default_resource_tags" {
     purpose : "vendorcorp"
     owner : "phorton@sonatype.com"
     sonatype-group : "se"
-    vendorcorp-purpose : "tools"
+    vendorcorp-purpose : "iday"
   }
 }
 
@@ -21,4 +21,11 @@ variable "environment" {
   description = "Used as part of Sonatype's Shared AWS Infrastructure"
   type        = string
   default     = "production"
+}
+
+# Jenkins Operator Chart Version
+variable "jeknins_operator_version" {
+  description = "Version of the Jenkins Operator to deploy"
+  type        = string
+  default     = "v0.8.0"
 }

@@ -1,0 +1,6 @@
+# See https://jenkinsci.github.io/kubernetes-operator/docs/getting-started/latest/installing-the-operator/#JenkinsConfiguration
+jenkins:
+  enabled: true
+  service:
+    port: 8080
+    type: "NodePort"
