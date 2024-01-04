@@ -2,7 +2,6 @@
 
 This repository contains Terraform to deploy a number of Jenkins Installation using the [Jenkins Operator](https://jenkinsci.github.io/kubernetes-operator).
 
-
 ## READ THIS FIRST
 
 You need to have installed `aws-vault`, `aws-cli` and configured your access before you can run anything.

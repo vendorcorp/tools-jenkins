@@ -8,6 +8,21 @@ jenkins:
             jenkins:
               noUsageStatistics: true
               systemMessage: "This is Jenkins for VendorCorp - all configuration of Jenkins is managed in code!"
+          2-security.yaml: |
+            jenkins:
+              securityRealm:
+                keycloak:
+                  keycloakJson: |-
+                    {
+                      "realm": "VendorCorp",
+                      "auth-server-url": "https://keycloak.corp.vendorcorp.net/",
+                      "ssl-required": "external",
+                      "resource": "jenkins",
+                      "public-client": true,
+                      "confidential-port": 0
+                    }
+                  keycloakRespectAccessTokenTimeout: false
+                  keycloakValidate: false
           3-clouds.yaml: |
             jenkins:
               clouds:
