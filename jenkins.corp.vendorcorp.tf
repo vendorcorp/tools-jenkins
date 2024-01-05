@@ -69,3 +69,20 @@ resource "kubernetes_ingress_v1" "jenkins" {
 
   wait_for_load_balancer = true
 }
+
+################################################################################
+# Create ConfigMap for gatus monitoring
+################################################################################
+resource "kubernetes_config_map" "gatus" {
+  metadata {
+    name = "gatus-config"
+    namespace = kubernetes_namespace.jenkins.metadata[0].name
+    labels = {
+      "gatus.io/enabled": "true"
+    }
+  }
+
+  data = {
+    "tools-jenkins-jenkins.corp.vendorcorp.yaml": "${file("values/jenkins.corp.vendorcorp.net-gatus.yaml")}"
+  }
+}
