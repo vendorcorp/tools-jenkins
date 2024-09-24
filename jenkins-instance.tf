@@ -17,32 +17,46 @@ resource "kubernetes_config_map" "jenkins_configuration" {
     }
 
     data = {
-        "1-base-system.yaml" = <<-EOD
+        "custom-config.yaml" = <<-EOD
 jenkins:
-    noUsageStatistics: true
-    systemMessage: "This is Jenkins for VendorCorp (${terraform.workspace}) - all configuration of Jenkins is managed in code!"
-EOD
-        "2-security.yaml" = <<-EOD
-jenkins:
-    securityRealm:
-    keycloak:
-        keycloakJson: |-
-        {
-            "realm": "VendorCorp",
-            "auth-server-url": "https://keycloak.eu1.corp.vendorcorp.net/",
-            "ssl-required": "external",
-            "resource": "jenkins",
-            "public-client": true,
-            "confidential-port": 0
-        }
-        keycloakRespectAccessTokenTimeout: false
-        keycloakValidate: false
-EOD
-        "9-unclassified.yaml" = <<-EOD
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  clouds:
+  - kubernetes:
+      jenkinsTunnel: "jenkins-operator-slave-jenkins-${terraform.workspace}.jenkins.svc.cluster.local:50000"
+      jenkinsUrl: "http://jenkins-operator-http-jenkins-${terraform.workspace}.jenkins.svc.cluster.local:8080"
+      name: "kubernetes"
+      namespace: "jenkins"
+      retentionTimeout: 15
+      serverUrl: "https://kubernetes.default.svc.cluster.local:443"
+      templates:
+      - containers:
+        - args: "9999999"
+          command: "sleep"
+          image: "jenkins/jnlp-slave"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "agent"
+          workingDir: "/home/jenkins/agent"
+        id: "e5092f7f-54e8-44fa-9e07-f39e39f3a3b4"
+        label: "standard"
+        name: "agent"
+        namespace: "jenkins"
+        yamlMergeStrategy: "override"
+  noUsageStatistics: true
+  systemMessage: "This is Jenkins for VendorCorp (${terraform.workspace}) - all configuration of Jenkins is managed in code!"
 unclassified:
-    location:
-        adminAddress: no-reply@${module.shared_private.dns_zone_vendorcorp_name}
-        url: https://jenkins.${module.shared_private.dns_zone_vendorcorp_name}
+  location:
+    adminAddress: "no-reply@${module.shared_private.dns_zone_vendorcorp_name}"
+    url: "https://jenkins.${module.shared_private.dns_zone_vendorcorp_name}"
 EOD
     }
 }
@@ -114,6 +128,10 @@ resource "kubernetes_manifest" "jenkins_instance" {
                     }
                 ],
                 "plugins": [
+                    {
+                        "name": "github-branch-source",
+                        "version": "1797.v86fdb_4d57d43"
+                    },
                     {
                         "name": "keycloak",
                         "version": "2.3.2"
@@ -223,15 +241,15 @@ resource "kubernetes_config_map" "gatus" {
     }
 
     data = {
-        "tools-jenkins-jenkins.${module.shared_private.dns_zone_vendorcorp_name}": <<EOD
+        "tools-jenkins-jenkins.${module.shared_private.dns_zone_vendorcorp_name}.yaml": <<-EOD
 endpoints:
-- name: "Jenkins"
+  - name: "Jenkins"
     group: "vendorcorp"
     url: "https://jenkins.${module.shared_private.dns_zone_vendorcorp_name}/login"
     interval: 1m
     conditions:
-    - "[STATUS] == 200"         # Status must be 200
-    - "[RESPONSE_TIME] < 300"   # Response time must be under 300ms
-    EOD
+      - "[STATUS] == 200"         # Status must be 200
+      - "[RESPONSE_TIME] < 300"   # Response time must be under 300ms
+EOD
     }
 }

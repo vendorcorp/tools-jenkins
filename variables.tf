@@ -27,5 +27,5 @@ variable "environment" {
 variable "jeknins_operator_version" {
   description = "Version of the Jenkins Operator to deploy"
   type        = string
-  default     = "v0.8.0"
+  default     = "v0.8.1"
 }
